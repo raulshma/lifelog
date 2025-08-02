@@ -6,3 +6,10 @@ declare module 'fastify' {
     session?: Session;
   }
 }
+
+// Extend FastifyInstance for custom properties if needed
+declare module 'fastify' {
+  interface FastifyInstance {
+    // Add custom properties here if needed in the future
+  }
+}

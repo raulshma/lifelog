@@ -1,95 +1,87 @@
 # LifeLog Backend
 
-A high-performance REST API server built with Fastify and TypeScript for the LifeLog application.
+Backend API server for the LifeLog application built with Fastify and TypeScript.
+
+## Project Structure
+
+```
+src/
+├── middleware/          # Custom middleware functions
+│   ├── auth.ts         # Authentication middleware
+│   ├── error.ts        # Error handling middleware
+│   └── index.ts        # Middleware exports
+├── models/             # Database models and schemas
+│   └── schema.ts       # Drizzle ORM schema definitions
+├── routes/             # API route handlers
+│   ├── auth.ts         # Authentication routes
+│   ├── health.ts       # Health check routes
+│   └── index.ts        # Route registration
+├── services/           # Business logic layer
+│   ├── auth.service.ts # Authentication service
+│   ├── user.service.ts # User management service
+│   └── index.ts        # Service exports
+├── types/              # TypeScript type definitions
+│   ├── api.ts          # API response types
+│   ├── fastify.d.ts    # Fastify type extensions
+│   └── index.ts        # Type exports
+├── utils/              # Utility functions
+│   ├── auth.ts         # Better Auth configuration
+│   ├── database.ts     # Database connection
+│   ├── errors.ts       # Custom error classes
+│   ├── helpers.ts      # Common helper functions
+│   ├── validation.ts   # Input validation
+│   └── index.ts        # Utility exports
+└── server.ts           # Main server file
+```
 
 ## Features
 
-- **Fastify Framework**: High-performance HTTP server with TypeScript support
-- **Security**: CORS and Helmet middleware for security headers
-- **Environment Configuration**: Environment-based configuration with validation
-- **Error Handling**: Global error handling with structured responses
-- **Health Checks**: Built-in health check endpoint
-- **Development Tools**: Hot reloading with nodemon and ts-node
+- **Fastify** - High-performance HTTP server
+- **TypeScript** - Type safety across the stack
+- **Drizzle ORM** - Type-safe database operations
+- **Better Auth** - Authentication and session management
+- **PostgreSQL** - Robust relational database
+- **Error Handling** - Comprehensive error handling and logging
+- **Middleware** - Authentication, logging, and error middleware
+- **Modular Architecture** - Clean separation of concerns
 
-## Quick Start
+## API Endpoints
 
-### Prerequisites
+### Health
+- `GET /health` - Basic health check
+- `GET /health/detailed` - Detailed health check with database status
 
-- Node.js 18+ 
-- npm or yarn
+### Authentication
+- `POST /api/auth/sign-up` - User registration
+- `POST /api/auth/sign-in` - User login
+- `POST /api/auth/signout` - User logout
+- `GET /api/auth/me` - Get current user (protected)
 
-### Installation
+### API Info
+- `GET /api` - API information and available endpoints
+
+## Development
 
 ```bash
+# Install dependencies
 npm install
-```
 
-### Development
-
-```bash
-# Start development server with hot reloading
+# Start development server
 npm run dev
-
-# Type checking
-npm run type-check
 
 # Build for production
 npm run build
 
 # Start production server
 npm start
+
+# Database operations
+npm run db:generate  # Generate migrations
+npm run db:migrate   # Run migrations
+npm run db:push      # Push schema to database
+npm run db:studio    # Open Drizzle Studio
 ```
 
-### Environment Variables
+## Environment Variables
 
-Copy `.env.example` to `.env` and configure:
-
-```env
-NODE_ENV=development
-PORT=3001
-HOST=0.0.0.0
-CORS_ORIGIN=http://localhost:5173
-```
-
-## API Endpoints
-
-### Health Check
-- **GET** `/health` - Server health status
-
-### API Info
-- **GET** `/api` - API information and version
-
-## Project Structure
-
-```
-src/
-├── routes/          # API route handlers
-├── services/        # Business logic layer
-├── models/          # Database models and schemas
-├── middleware/      # Custom middleware
-├── utils/           # Utility functions
-└── server.ts        # Main server file
-```
-
-## Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm start` - Start production server
-- `npm run type-check` - Run TypeScript type checking
-- `npm run clean` - Clean build directory
-
-## Development
-
-The server runs on `http://localhost:3001` by default in development mode with:
-- Hot reloading via nodemon
-- Pretty logging via pino-pretty
-- CORS enabled for frontend development
-- TypeScript compilation on-the-fly
-
-## Production
-
-For production deployment:
-1. Set `NODE_ENV=production`
-2. Run `npm run build`
-3. Start with `npm start`
+See `.env` file for configuration options including database connection, authentication secrets, and server settings.

@@ -3,6 +3,9 @@ import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import env from '@fastify/env';
 import { config } from 'dotenv';
+import { registerRoutes } from './routes';
+import { errorHandler, notFoundHandler, requestLogger } from './middleware/error';
+import { testConnection } from './utils/database';
 
 // Load environment variables
 config();
@@ -82,54 +85,25 @@ async function buildServer(): Promise<FastifyInstance> {
       credentials: true
     });
 
-    // Health check route
-    fastify.get('/health', async () => {
-      return { 
-        status: 'ok', 
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
-        environment: process.env['NODE_ENV']
-      };
-    });
+    // Register request logging middleware
+    await fastify.addHook('preHandler', requestLogger);
 
-    // API routes will be registered here in future tasks
-    fastify.get('/api', async () => {
-      return { 
-        message: 'LifeLog API Server',
-        version: '1.0.0',
-        timestamp: new Date().toISOString()
-      };
-    });
+    // Test database connection on startup
+    const dbConnected = await testConnection();
+    if (!dbConnected) {
+      fastify.log.warn('Database connection failed - some features may not work');
+    } else {
+      fastify.log.info('Database connection established');
+    }
 
-    // Global error handler
-    fastify.setErrorHandler((error, _request, reply) => {
-      fastify.log.error(error);
-      
-      const statusCode = error.statusCode || 500;
-      const errorResponse = {
-        error: error.name || 'Internal Server Error',
-        message: error.message || 'An unexpected error occurred',
-        statusCode,
-        timestamp: new Date().toISOString()
-      };
+    // Register all routes
+    await registerRoutes(fastify);
 
-      // Don't expose internal errors in production
-      if (process.env['NODE_ENV'] === 'production' && statusCode === 500) {
-        errorResponse.message = 'Internal Server Error';
-      }
+    // Set global error handler
+    fastify.setErrorHandler(errorHandler);
 
-      reply.status(statusCode).send(errorResponse);
-    });
-
-    // 404 handler
-    fastify.setNotFoundHandler((request, reply) => {
-      reply.status(404).send({
-        error: 'Not Found',
-        message: `Route ${request.method}:${request.url} not found`,
-        statusCode: 404,
-        timestamp: new Date().toISOString()
-      });
-    });
+    // Set 404 handler
+    fastify.setNotFoundHandler(notFoundHandler);
 
     return fastify;
   } catch (error) {

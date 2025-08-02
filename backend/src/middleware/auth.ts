@@ -5,7 +5,7 @@ import { auth } from '../utils/auth';
 export async function verifyAuth(request: FastifyRequest, reply: FastifyReply) {
   try {
     const session = await auth.api.getSession({
-      headers: request.headers as Record<string, string>,
+      headers: new Headers(request.headers as Record<string, string>),
     });
 
     if (!session) {
@@ -17,7 +17,7 @@ export async function verifyAuth(request: FastifyRequest, reply: FastifyReply) {
 
     // Add user and session to request context
     request.user = session.user;
-    request.session = session.session;
+    request.session = session;
   } catch (error) {
     return reply.status(401).send({
       error: 'Unauthorized',
@@ -27,15 +27,15 @@ export async function verifyAuth(request: FastifyRequest, reply: FastifyReply) {
 }
 
 // Optional authentication middleware (doesn't fail if no auth)
-export async function optionalAuth(request: FastifyRequest, reply: FastifyReply) {
+export async function optionalAuth(request: FastifyRequest, _reply: FastifyReply) {
   try {
     const session = await auth.api.getSession({
-      headers: request.headers as Record<string, string>,
+      headers: new Headers(request.headers as Record<string, string>),
     });
 
     if (session) {
       request.user = session.user;
-      request.session = session.session;
+      request.session = session;
     }
   } catch (error) {
     // Silently fail for optional auth
