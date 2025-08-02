@@ -1,5 +1,11 @@
 import React from 'react';
-import { Text, Card, CardHeader, makeStyles, tokens } from '@fluentui/react-components';
+import {
+  Text,
+  Card,
+  CardHeader,
+  makeStyles,
+  tokens,
+} from '@fluentui/react-components';
 
 const useStyles = makeStyles({
   container: {
@@ -18,15 +24,18 @@ export const DayTracker: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <Text size={800} weight="bold">Day Tracker</Text>
-      
+      <Text size={800} weight='bold'>
+        Day Tracker
+      </Text>
+
       <Card className={styles.placeholderCard}>
         <CardHeader
           header={<Text size={600}>Coming Soon</Text>}
           description={
             <Text>
-              The Day Tracker module will help you track your daily activities, habits, and goals.
-              Features will include habit tracking, daily journaling, and progress visualization.
+              The Day Tracker module will help you track your daily activities,
+              habits, and goals. Features will include habit tracking, daily
+              journaling, and progress visualization.
             </Text>
           }
         />

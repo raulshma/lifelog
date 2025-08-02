@@ -4,7 +4,11 @@ import helmet from '@fastify/helmet';
 import env from '@fastify/env';
 import { config } from 'dotenv';
 import { registerRoutes } from './routes';
-import { errorHandler, notFoundHandler, requestLogger } from './middleware/error';
+import {
+  errorHandler,
+  notFoundHandler,
+  requestLogger,
+} from './middleware/error';
 import { testConnection } from './utils/database';
 
 // Load environment variables
@@ -17,21 +21,21 @@ const envSchema = {
   properties: {
     NODE_ENV: {
       type: 'string',
-      default: 'development'
+      default: 'development',
     },
     PORT: {
       type: 'string',
-      default: '3001'
+      default: '3001',
     },
     HOST: {
       type: 'string',
-      default: '0.0.0.0'
+      default: '0.0.0.0',
     },
     CORS_ORIGIN: {
       type: 'string',
-      default: 'http://localhost:5173'
-    }
-  }
+      default: 'http://localhost:5173',
+    },
+  },
 };
 
 // Create Fastify instance
@@ -44,11 +48,11 @@ const fastify = Fastify({
         options: {
           colorize: true,
           translateTime: 'HH:MM:ss Z',
-          ignore: 'pid,hostname'
-        }
-      }
-    })
-  }
+          ignore: 'pid,hostname',
+        },
+      },
+    }),
+  },
 });
 
 // Build server function
@@ -57,7 +61,7 @@ async function buildServer(): Promise<FastifyInstance> {
     // Register environment plugin
     await fastify.register(env, {
       schema: envSchema,
-      dotenv: true
+      dotenv: true,
     });
 
     // Register security plugins
@@ -67,9 +71,9 @@ async function buildServer(): Promise<FastifyInstance> {
           defaultSrc: ["'self'"],
           styleSrc: ["'self'", "'unsafe-inline'"],
           scriptSrc: ["'self'"],
-          imgSrc: ["'self'", "data:", "https:"]
-        }
-      }
+          imgSrc: ["'self'", 'data:', 'https:'],
+        },
+      },
     });
 
     // Register CORS
@@ -80,9 +84,9 @@ async function buildServer(): Promise<FastifyInstance> {
           callback(null, true);
           return;
         }
-        callback(new Error("Not allowed"), false);
+        callback(new Error('Not allowed'), false);
       },
-      credentials: true
+      credentials: true,
     });
 
     // Register request logging middleware
@@ -91,7 +95,9 @@ async function buildServer(): Promise<FastifyInstance> {
     // Test database connection on startup
     const dbConnected = await testConnection();
     if (!dbConnected) {
-      fastify.log.warn('Database connection failed - some features may not work');
+      fastify.log.warn(
+        'Database connection failed - some features may not work'
+      );
     } else {
       fastify.log.info('Database connection established');
     }
@@ -121,7 +127,9 @@ async function start(): Promise<void> {
 
     await server.listen({ port, host });
     server.log.info(`🚀 Server running at http://${host}:${port}`);
-    server.log.info(`📊 Health check available at http://${host}:${port}/health`);
+    server.log.info(
+      `📊 Health check available at http://${host}:${port}/health`
+    );
     server.log.info(`🔧 Environment: ${process.env['NODE_ENV']}`);
   } catch (error) {
     fastify.log.error(error);

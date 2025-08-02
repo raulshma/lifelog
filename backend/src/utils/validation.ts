@@ -7,25 +7,28 @@ export function validateEmail(email: string): boolean {
 }
 
 // Password validation
-export function validatePassword(password: string): { isValid: boolean; errors: string[] } {
+export function validatePassword(password: string): {
+  isValid: boolean;
+  errors: string[];
+} {
   const errors: string[] = [];
-  
+
   if (password.length < 8) {
     errors.push('Password must be at least 8 characters long');
   }
-  
+
   if (!/[A-Z]/.test(password)) {
     errors.push('Password must contain at least one uppercase letter');
   }
-  
+
   if (!/[a-z]/.test(password)) {
     errors.push('Password must contain at least one lowercase letter');
   }
-  
+
   if (!/\d/.test(password)) {
     errors.push('Password must contain at least one number');
   }
-  
+
   return {
     isValid: errors.length === 0,
     errors,
@@ -47,11 +50,15 @@ export function validateStringLength(
   maxLength?: number
 ): void {
   if (minLength && value.length < minLength) {
-    throw new ValidationError(`${fieldName} must be at least ${minLength} characters long`);
+    throw new ValidationError(
+      `${fieldName} must be at least ${minLength} characters long`
+    );
   }
-  
+
   if (maxLength && value.length > maxLength) {
-    throw new ValidationError(`${fieldName} must be no more than ${maxLength} characters long`);
+    throw new ValidationError(
+      `${fieldName} must be no more than ${maxLength} characters long`
+    );
   }
 }
 
@@ -64,20 +71,22 @@ export function validateUserRegistration(data: {
 }): void {
   validateRequired(data.email, 'Email');
   validateRequired(data.password, 'Password');
-  
+
   if (!validateEmail(data.email)) {
     throw new ValidationError('Invalid email format');
   }
-  
+
   const passwordValidation = validatePassword(data.password);
   if (!passwordValidation.isValid) {
-    throw new ValidationError(`Password validation failed: ${passwordValidation.errors.join(', ')}`);
+    throw new ValidationError(
+      `Password validation failed: ${passwordValidation.errors.join(', ')}`
+    );
   }
-  
+
   if (data.firstName) {
     validateStringLength(data.firstName, 'First name', 1, 100);
   }
-  
+
   if (data.lastName) {
     validateStringLength(data.lastName, 'Last name', 1, 100);
   }

@@ -1,5 +1,11 @@
 import React from 'react';
-import { Text, Card, CardHeader, makeStyles, tokens } from '@fluentui/react-components';
+import {
+  Text,
+  Card,
+  CardHeader,
+  makeStyles,
+  tokens,
+} from '@fluentui/react-components';
 
 const useStyles = makeStyles({
   container: {
@@ -18,15 +24,18 @@ export const Vault: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <Text size={800} weight="bold">Vault</Text>
-      
+      <Text size={800} weight='bold'>
+        Vault
+      </Text>
+
       <Card className={styles.placeholderCard}>
         <CardHeader
           header={<Text size={600}>Coming Soon</Text>}
           description={
             <Text>
-              The Vault module will provide secure storage for sensitive information.
-              Features will include encrypted storage, secure sharing, and access controls.
+              The Vault module will provide secure storage for sensitive
+              information. Features will include encrypted storage, secure
+              sharing, and access controls.
             </Text>
           }
         />

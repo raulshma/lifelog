@@ -48,16 +48,19 @@ src/
 ## API Endpoints
 
 ### Health
+
 - `GET /health` - Basic health check
 - `GET /health/detailed` - Detailed health check with database status
 
 ### Authentication
+
 - `POST /api/auth/sign-up` - User registration
 - `POST /api/auth/sign-in` - User login
 - `POST /api/auth/signout` - User logout
 - `GET /api/auth/me` - Get current user (protected)
 
 ### API Info
+
 - `GET /api` - API information and available endpoints
 
 ## Development

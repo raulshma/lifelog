@@ -79,25 +79,29 @@ export const Layout: React.FC = () => {
     <FluentProvider theme={webLightTheme}>
       <div className={styles.root}>
         <header className={styles.header}>
-          <Text size={600} weight="semibold">
+          <Text size={600} weight='semibold'>
             LifeLog
           </Text>
           <nav className={styles.nav}>
             {/* Future: User menu, settings, etc. */}
           </nav>
         </header>
-        
+
         <main className={styles.main}>
           <aside className={styles.sidebar}>
             <nav>
-              {navigationItems.map((item) => {
+              {navigationItems.map(item => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
-                
+
                 return (
-                  <Link key={item.path} to={item.path} style={{ textDecoration: 'none' }}>
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    style={{ textDecoration: 'none' }}
+                  >
                     <Button
-                      appearance="subtle"
+                      appearance='subtle'
                       icon={<Icon />}
                       className={`${styles.navButton} ${isActive ? styles.activeNavButton : ''}`}
                     >
@@ -108,7 +112,7 @@ export const Layout: React.FC = () => {
               })}
             </nav>
           </aside>
-          
+
           <div className={styles.content}>
             <Outlet />
           </div>

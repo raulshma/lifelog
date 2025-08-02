@@ -15,7 +15,7 @@ export async function healthRoutes(fastify: FastifyInstance): Promise<void> {
   // Detailed health check with database connection
   fastify.get('/health/detailed', async (_request, reply) => {
     const dbConnected = await testConnection();
-    
+
     const health = {
       status: dbConnected ? 'ok' : 'degraded',
       timestamp: new Date().toISOString(),

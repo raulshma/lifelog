@@ -5,7 +5,9 @@ export class AuthService {
   // Validate user session
   static async validateSession(headers: Record<string, string>) {
     try {
-      const session = await auth.api.getSession({ headers: new Headers(headers) });
+      const session = await auth.api.getSession({
+        headers: new Headers(headers),
+      });
       return session;
     } catch (error) {
       console.error('Session validation failed:', error);

@@ -2,7 +2,8 @@
 
 // Generate a random string
 export function generateRandomString(length: number = 32): string {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const chars =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
   for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -21,35 +22,43 @@ export function formatDate(date: Date): string {
 }
 
 // Parse environment variable as integer
-export function parseEnvInt(value: string | undefined, defaultValue: number): number {
-  if (!value) return defaultValue;
+export function parseEnvInt(
+  value: string | undefined,
+  defaultValue: number
+): number {
+  if (!value) {return defaultValue;}
   const parsed = parseInt(value, 10);
   return isNaN(parsed) ? defaultValue : parsed;
 }
 
 // Parse environment variable as boolean
-export function parseEnvBool(value: string | undefined, defaultValue: boolean): boolean {
-  if (!value) return defaultValue;
+export function parseEnvBool(
+  value: string | undefined,
+  defaultValue: boolean
+): boolean {
+  if (!value) {return defaultValue;}
   return value.toLowerCase() === 'true';
 }
 
 // Sanitize string for logging (remove sensitive data)
 export function sanitizeForLog(obj: any): any {
   const sensitiveKeys = ['password', 'token', 'secret', 'key', 'auth'];
-  
+
   if (typeof obj !== 'object' || obj === null) {
     return obj;
   }
-  
+
   if (Array.isArray(obj)) {
     return obj.map(sanitizeForLog);
   }
-  
+
   const sanitized: any = {};
   for (const [key, value] of Object.entries(obj)) {
     const lowerKey = key.toLowerCase();
-    const isSensitive = sensitiveKeys.some(sensitive => lowerKey.includes(sensitive));
-    
+    const isSensitive = sensitiveKeys.some(sensitive =>
+      lowerKey.includes(sensitive)
+    );
+
     if (isSensitive) {
       sanitized[key] = '[REDACTED]';
     } else if (typeof value === 'object') {
@@ -58,7 +67,7 @@ export function sanitizeForLog(obj: any): any {
       sanitized[key] = value;
     }
   }
-  
+
   return sanitized;
 }
 
@@ -69,7 +78,7 @@ export function createPaginationMeta(
   total: number
 ) {
   const totalPages = Math.ceil(total / limit);
-  
+
   return {
     page,
     limit,

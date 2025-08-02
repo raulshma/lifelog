@@ -28,13 +28,13 @@ export class AuthService {
       API_ENDPOINTS.AUTH.LOGIN,
       credentials
     );
-    
+
     if (response.success && response.data) {
       // Store auth token
       localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, response.data.token);
       return response.data;
     }
-    
+
     throw new Error(response.error || 'Login failed');
   }
 
@@ -46,13 +46,13 @@ export class AuthService {
       API_ENDPOINTS.AUTH.REGISTER,
       userData
     );
-    
+
     if (response.success && response.data) {
       // Store auth token
       localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, response.data.token);
       return response.data;
     }
-    
+
     throw new Error(response.error || 'Registration failed');
   }
 
@@ -76,11 +76,11 @@ export class AuthService {
    */
   static async getCurrentUser(): Promise<User> {
     const response = await apiService.get<User>(API_ENDPOINTS.USERS.PROFILE);
-    
+
     if (response.success && response.data) {
       return response.data;
     }
-    
+
     throw new Error(response.error || 'Failed to get user profile');
   }
 

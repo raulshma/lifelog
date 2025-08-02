@@ -6,7 +6,11 @@ export class UserService {
   // Get user by ID
   static async getUserById(id: string): Promise<User | null> {
     try {
-      const result = await db.select().from(users).where(eq(users.id, id)).limit(1);
+      const result = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, id))
+        .limit(1);
       return result[0] || null;
     } catch (error) {
       console.error('Error getting user by ID:', error);
@@ -17,7 +21,11 @@ export class UserService {
   // Get user by email
   static async getUserByEmail(email: string): Promise<User | null> {
     try {
-      const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
+      const result = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, email))
+        .limit(1);
       return result[0] || null;
     } catch (error) {
       console.error('Error getting user by email:', error);
@@ -28,15 +36,18 @@ export class UserService {
   // Create new user
   static async createUser(userData: NewUser): Promise<User> {
     try {
-      const result = await db.insert(users).values({
-        ...userData,
-        updatedAt: new Date(),
-      }).returning();
-      
+      const result = await db
+        .insert(users)
+        .values({
+          ...userData,
+          updatedAt: new Date(),
+        })
+        .returning();
+
       if (!result[0]) {
         throw new Error('Failed to create user - no result returned');
       }
-      
+
       return result[0];
     } catch (error) {
       console.error('Error creating user:', error);
@@ -45,7 +56,10 @@ export class UserService {
   }
 
   // Update user
-  static async updateUser(id: string, userData: Partial<NewUser>): Promise<User | null> {
+  static async updateUser(
+    id: string,
+    userData: Partial<NewUser>
+  ): Promise<User | null> {
     try {
       const result = await db
         .update(users)
@@ -55,7 +69,7 @@ export class UserService {
         })
         .where(eq(users.id, id))
         .returning();
-      
+
       return result[0] || null;
     } catch (error) {
       console.error('Error updating user:', error);

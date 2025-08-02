@@ -1,5 +1,11 @@
 import React from 'react';
-import { Text, Card, CardHeader, makeStyles, tokens } from '@fluentui/react-components';
+import {
+  Text,
+  Card,
+  CardHeader,
+  makeStyles,
+  tokens,
+} from '@fluentui/react-components';
 
 const useStyles = makeStyles({
   container: {
@@ -18,15 +24,18 @@ export const KnowledgeBase: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <Text size={800} weight="bold">Knowledge Base</Text>
-      
+      <Text size={800} weight='bold'>
+        Knowledge Base
+      </Text>
+
       <Card className={styles.placeholderCard}>
         <CardHeader
           header={<Text size={600}>Coming Soon</Text>}
           description={
             <Text>
-              The Knowledge Base module will help you organize and search your personal knowledge.
-              Features will include note-taking, tagging, search, and knowledge graphs.
+              The Knowledge Base module will help you organize and search your
+              personal knowledge. Features will include note-taking, tagging,
+              search, and knowledge graphs.
             </Text>
           }
         />

@@ -9,7 +9,7 @@ export async function authRoutes(fastify: FastifyInstance): Promise<void> {
   });
 
   // Get current user (protected route)
-  fastify.get('/me', { preHandler: verifyAuth }, async (request) => {
+  fastify.get('/me', { preHandler: verifyAuth }, async request => {
     return {
       user: request.user,
       session: request.session,
@@ -22,7 +22,7 @@ export async function authRoutes(fastify: FastifyInstance): Promise<void> {
       await auth.api.signOut({
         headers: request.headers as Record<string, string>,
       });
-      
+
       return reply.status(200).send({
         success: true,
         message: 'Signed out successfully',

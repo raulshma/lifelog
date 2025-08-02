@@ -27,7 +27,10 @@ export async function verifyAuth(request: FastifyRequest, reply: FastifyReply) {
 }
 
 // Optional authentication middleware (doesn't fail if no auth)
-export async function optionalAuth(request: FastifyRequest, _reply: FastifyReply) {
+export async function optionalAuth(
+  request: FastifyRequest,
+  _reply: FastifyReply
+) {
   try {
     const session = await auth.api.getSession({
       headers: new Headers(request.headers as Record<string, string>),

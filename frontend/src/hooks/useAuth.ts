@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { AuthService, type LoginRequest, type RegisterRequest } from '@services';
+import {
+  AuthService,
+  type LoginRequest,
+  type RegisterRequest,
+} from '@services';
 import type { User } from '@types';
 
 export interface UseAuthReturn {
@@ -32,7 +36,7 @@ export const useAuth = (): UseAuthReturn => {
   // Login mutation
   const loginMutation = useMutation({
     mutationFn: AuthService.login,
-    onSuccess: (data) => {
+    onSuccess: data => {
       queryClient.setQueryData(['currentUser'], (data as any).user);
       setError(null);
     },
@@ -44,7 +48,7 @@ export const useAuth = (): UseAuthReturn => {
   // Register mutation
   const registerMutation = useMutation({
     mutationFn: AuthService.register,
-    onSuccess: (data) => {
+    onSuccess: data => {
       queryClient.setQueryData(['currentUser'], (data as any).user);
       setError(null);
     },
@@ -75,7 +79,8 @@ export const useAuth = (): UseAuthReturn => {
   return {
     user: user || null,
     isAuthenticated: !!user,
-    isLoading: isLoading || loginMutation.isPending || registerMutation.isPending,
+    isLoading:
+      isLoading || loginMutation.isPending || registerMutation.isPending,
     login: async (credentials: LoginRequest) => {
       setError(null);
       await loginMutation.mutateAsync(credentials);

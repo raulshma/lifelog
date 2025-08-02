@@ -4,7 +4,11 @@ export class AppError extends Error {
   public statusCode: number;
   public isOperational: boolean;
 
-  constructor(message: string, statusCode: number = 500, isOperational: boolean = true) {
+  constructor(
+    message: string,
+    statusCode: number = 500,
+    isOperational: boolean = true
+  ) {
     super(message);
     this.statusCode = statusCode;
     this.isOperational = isOperational;
@@ -44,9 +48,12 @@ export class ConflictError extends AppError {
 }
 
 // Error response formatter
-export function formatErrorResponse(error: Error, includeStack: boolean = false) {
+export function formatErrorResponse(
+  error: Error,
+  includeStack: boolean = false
+) {
   const isAppError = error instanceof AppError;
-  
+
   return {
     error: error.name || 'Internal Server Error',
     message: error.message || 'An unexpected error occurred',

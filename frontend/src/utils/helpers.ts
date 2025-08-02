@@ -3,7 +3,10 @@
 /**
  * Format a date to a readable string
  */
-export const formatDate = (date: Date | string, options?: Intl.DateTimeFormatOptions): string => {
+export const formatDate = (
+  date: Date | string,
+  options?: Intl.DateTimeFormatOptions
+): string => {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
   return dateObj.toLocaleDateString('en-US', {
     year: 'numeric',

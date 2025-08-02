@@ -21,9 +21,7 @@ export const auth = betterAuth({
   },
   secret: process.env['BETTER_AUTH_SECRET'] || 'your-super-secret-auth-key',
   baseURL: process.env['BETTER_AUTH_URL'] || 'http://localhost:3001',
-  trustedOrigins: [
-    process.env['CORS_ORIGIN'] || 'http://localhost:5173',
-  ],
+  trustedOrigins: [process.env['CORS_ORIGIN'] || 'http://localhost:5173'],
 });
 
 export type Session = typeof auth.$Infer.Session;

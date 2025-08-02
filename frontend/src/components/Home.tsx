@@ -1,5 +1,12 @@
 import React from 'react';
-import { Text, Card, CardHeader, CardPreview, makeStyles, tokens } from '@fluentui/react-components';
+import {
+  Text,
+  Card,
+  CardHeader,
+  CardPreview,
+  makeStyles,
+  tokens,
+} from '@fluentui/react-components';
 
 const useStyles = makeStyles({
   container: {
@@ -55,29 +62,41 @@ export const Home: React.FC = () => {
     <div className={styles.container}>
       <Card className={styles.welcomeCard}>
         <CardHeader
-          header={<Text size={800} weight="bold">Welcome to LifeLog</Text>}
+          header={
+            <Text size={800} weight='bold'>
+              Welcome to LifeLog
+            </Text>
+          }
           description={
             <Text>
-              Your comprehensive life organization application. Get started by exploring the modules below.
+              Your comprehensive life organization application. Get started by
+              exploring the modules below.
             </Text>
           }
         />
       </Card>
 
       <div>
-        <Text size={600} weight="semibold" style={{ marginBottom: tokens.spacingVerticalM }}>
+        <Text
+          size={600}
+          weight='semibold'
+          style={{ marginBottom: tokens.spacingVerticalM }}
+        >
           Available Modules
         </Text>
-        
+
         <div className={styles.modulesGrid}>
-          {modules.map((module) => (
+          {modules.map(module => (
             <Card key={module.name} className={styles.moduleCard}>
               <CardHeader
-                header={<Text weight="semibold">{module.name}</Text>}
+                header={<Text weight='semibold'>{module.name}</Text>}
                 description={<Text size={200}>{module.description}</Text>}
               />
               <CardPreview>
-                <Text size={100} style={{ color: tokens.colorNeutralForeground3 }}>
+                <Text
+                  size={100}
+                  style={{ color: tokens.colorNeutralForeground3 }}
+                >
                   {module.status}
                 </Text>
               </CardPreview>
