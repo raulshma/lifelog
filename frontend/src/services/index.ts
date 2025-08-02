@@ -1,4 +1,3 @@
 // Export all API services from this directory
-// This file will be populated as services are added
-
-export {};
+export { AuthService } from './authService';
+export type { LoginRequest, RegisterRequest } from './authService';

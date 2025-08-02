@@ -1,37 +1,38 @@
-import React from 'react';
-import './App.css';
 
-interface AppProps {
-  children?: React.ReactNode;
-}
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Layout } from '@components/Layout';
+import { Home } from '@components/Home';
+import { DayTracker, KnowledgeBase, Vault, DocumentHub, Inventory } from '@modules';
+import type { AppProps } from '@types';
+
+// Create a client for React Query
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App({ children }: AppProps) {
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>LifeLog</h1>
-        <p>Your comprehensive life organization application</p>
-      </header>
-      
-      <main className="app-main">
-        {children || (
-          <div className="welcome-message">
-            <h2>Welcome to LifeLog</h2>
-            <p>Project setup complete! Ready for module development.</p>
-            <div className="modules-preview">
-              <h3>Planned Modules:</h3>
-              <ul>
-                <li>Day Tracker</li>
-                <li>Knowledge Base</li>
-                <li>Vault</li>
-                <li>Document Hub</li>
-                <li>Inventory</li>
-              </ul>
-            </div>
-          </div>
-        )}
-      </main>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="day-tracker" element={<DayTracker />} />
+            <Route path="knowledge-base" element={<KnowledgeBase />} />
+            <Route path="vault" element={<Vault />} />
+            <Route path="document-hub" element={<DocumentHub />} />
+            <Route path="inventory" element={<Inventory />} />
+          </Route>
+        </Routes>
+        {children}
+      </Router>
+    </QueryClientProvider>
   );
 }
 
