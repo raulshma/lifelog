@@ -1,5 +1,13 @@
-.kiro/
-docs/
+# Environment and configuration files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Database
+*.db
+*.sqlite
 # Logs
 logs
 *.log
@@ -13,7 +21,8 @@ node_modules
 dist
 dist-ssr
 *.local
-
+.kiro/
+docs/
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
