@@ -22,7 +22,7 @@ dist
 dist-ssr
 *.local
 .kiro/
-docs/
+# docs/
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
