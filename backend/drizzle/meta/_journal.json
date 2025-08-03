@@ -15,6 +15,20 @@
       "when": 1754235053772,
       "tag": "0001_fearless_mystique",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1754235713577,
+      "tag": "0002_deep_juggernaut",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1754235917899,
+      "tag": "0003_numerous_mulholland_black",
+      "breakpoints": true
     }
   ]
 }
