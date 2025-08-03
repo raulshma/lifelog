@@ -1,5 +1,6 @@
 import { auth } from '../utils/auth';
 import { UserService } from './user.service';
+import { PasswordResetService } from './password-reset.service';
 
 export class AuthService {
   // Validate user session
@@ -54,5 +55,51 @@ export class AuthService {
       console.error('Sign out failed:', error);
       throw new Error('Sign out failed');
     }
+  }
+
+  // Sign up user (placeholder - implement with Better Auth)
+  static async signUp(_userData: {
+    email: string;
+    password: string;
+    firstName?: string;
+    lastName?: string;
+  }) {
+    try {
+      // This should be implemented using Better Auth's sign up functionality
+      // For now, we'll throw an error to indicate it needs implementation
+      throw new Error(
+        'Sign up functionality needs to be implemented with Better Auth'
+      );
+    } catch (error) {
+      console.error('Sign up failed:', error);
+      throw error;
+    }
+  }
+
+  // Sign in user (placeholder - implement with Better Auth)
+  static async signIn(_credentials: { email: string; password: string }) {
+    try {
+      // This should be implemented using Better Auth's sign in functionality
+      // For now, we'll throw an error to indicate it needs implementation
+      throw new Error(
+        'Sign in functionality needs to be implemented with Better Auth'
+      );
+    } catch (error) {
+      console.error('Sign in failed:', error);
+      throw error;
+    }
+  }
+
+  // Password reset methods
+  static async requestPasswordReset(email: string) {
+    return PasswordResetService.createResetToken(email);
+  }
+
+  static async resetPassword(token: string, newPassword: string) {
+    return PasswordResetService.resetPassword(token, newPassword);
+  }
+
+  static async verifyResetToken(token: string) {
+    return PasswordResetService.verifyResetToken(token);
   }
 }

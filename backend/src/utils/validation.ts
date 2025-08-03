@@ -91,3 +91,30 @@ export function validateUserRegistration(data: {
     validateStringLength(data.lastName, 'Last name', 1, 100);
   }
 }
+
+// Forgot password validation
+export function validateForgotPasswordRequest(data: { email: string }): void {
+  validateRequired(data.email, 'Email');
+
+  if (!validateEmail(data.email)) {
+    throw new ValidationError('Invalid email format');
+  }
+}
+
+// Reset password validation
+export function validateResetPasswordRequest(data: {
+  token: string;
+  newPassword: string;
+}): void {
+  validateRequired(data.token, 'Reset token');
+  validateRequired(data.newPassword, 'New password');
+
+  validateStringLength(data.token, 'Reset token', 1, 255);
+
+  const passwordValidation = validatePassword(data.newPassword);
+  if (!passwordValidation.isValid) {
+    throw new ValidationError(
+      `Password validation failed: ${passwordValidation.errors.join(', ')}`
+    );
+  }
+}

@@ -32,6 +32,20 @@ export const sessions = pgTable('sessions', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
+// Password reset tokens table
+export const passwordResetTokens = pgTable('password_reset_tokens', {
+  id: uuid('id')
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
+  userId: uuid('user_id')
+    .references(() => users.id, { onDelete: 'cascade' })
+    .notNull(),
+  token: varchar('token', { length: 255 }).notNull().unique(),
+  expiresAt: timestamp('expires_at').notNull(),
+  used: boolean('used').default(false).notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
 // Day Tracker Module Tables
 
 // Boards table for Kanban boards
@@ -704,6 +718,8 @@ export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 export type Session = typeof sessions.$inferSelect;
 export type NewSession = typeof sessions.$inferInsert;
+export type PasswordResetToken = typeof passwordResetTokens.$inferSelect;
+export type NewPasswordResetToken = typeof passwordResetTokens.$inferInsert;
 
 export type Board = typeof boards.$inferSelect;
 export type NewBoard = typeof boards.$inferInsert;

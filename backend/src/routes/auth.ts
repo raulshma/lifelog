@@ -2,7 +2,17 @@ import { FastifyInstance } from 'fastify';
 import { auth } from '../utils/auth';
 import { verifyAuth } from '../middleware/auth';
 import { AuthService } from '../services/auth';
-import { SignUpRequest, SignInRequest } from '../types/api';
+import { PasswordResetService } from '../services/password-reset.service';
+import {
+  SignUpRequest,
+  SignInRequest,
+  ForgotPasswordRequest,
+  ResetPasswordRequest,
+} from '../types/api';
+import {
+  validateForgotPasswordRequest,
+  validateResetPasswordRequest,
+} from '../utils/validation';
 
 export async function authRoutes(fastify: FastifyInstance): Promise<void> {
   // User registration endpoint
@@ -65,6 +75,93 @@ export async function authRoutes(fastify: FastifyInstance): Promise<void> {
       });
     }
   });
+
+  // Forgot password endpoint
+  fastify.post<{ Body: ForgotPasswordRequest }>(
+    '/forgot-password',
+    async (request, reply) => {
+      try {
+        // Validate request
+        validateForgotPasswordRequest(request.body);
+
+        const result = await PasswordResetService.createResetToken(
+          request.body.email
+        );
+        return reply.status(200).send({
+          success: result.success,
+          message: result.message,
+        });
+      } catch (error) {
+        return reply.status(400).send({
+          error: 'Password reset failed',
+          message: error instanceof Error ? error.message : 'Unknown error',
+        });
+      }
+    }
+  );
+
+  // Reset password endpoint
+  fastify.post<{ Body: ResetPasswordRequest }>(
+    '/reset-password',
+    async (request, reply) => {
+      try {
+        // Validate request
+        validateResetPasswordRequest(request.body);
+
+        const { token, newPassword } = request.body;
+        const result = await PasswordResetService.resetPassword(
+          token,
+          newPassword
+        );
+
+        if (!result.success) {
+          return reply.status(400).send({
+            error: 'Password reset failed',
+            message: result.message,
+          });
+        }
+
+        return reply.status(200).send({
+          success: true,
+          message: result.message,
+        });
+      } catch (error) {
+        return reply.status(400).send({
+          error: 'Password reset failed',
+          message: error instanceof Error ? error.message : 'Unknown error',
+        });
+      }
+    }
+  );
+
+  // Verify reset token endpoint
+  fastify.get<{ Querystring: { token: string } }>(
+    '/verify-reset-token',
+    async (request, reply) => {
+      try {
+        const { token } = request.query;
+
+        if (!token) {
+          return reply.status(400).send({
+            error: 'Missing token',
+            message: 'Reset token is required',
+          });
+        }
+
+        const result = await PasswordResetService.verifyResetToken(token);
+
+        return reply.status(result.valid ? 200 : 400).send({
+          success: result.valid,
+          message: result.message,
+        });
+      } catch (error) {
+        return reply.status(500).send({
+          error: 'Token verification failed',
+          message: error instanceof Error ? error.message : 'Unknown error',
+        });
+      }
+    }
+  );
 
   // Register Better Auth handler for additional endpoints (like password reset, etc.)
   fastify.all('/*', async (request, reply) => {

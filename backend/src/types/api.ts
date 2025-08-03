@@ -55,6 +55,20 @@ export interface AuthResponse {
   };
 }
 
+// Password reset request types
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ResetPasswordRequest {
+  token: string;
+  newPassword: string;
+}
+
+export interface PasswordResetResponse {
+  message: string;
+}
+
 // Health check response
 export interface HealthResponse {
   status: 'ok' | 'degraded' | 'down';
