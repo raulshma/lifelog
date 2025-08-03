@@ -79,11 +79,24 @@ async function buildServer(): Promise<FastifyInstance> {
     // Register CORS
     await fastify.register(cors, {
       origin: (origin, callback) => {
-        const hostname = new URL(origin || '').hostname;
-        if (hostname === 'localhost' || hostname === '127.0.0.1' || !origin) {
+        // Allow requests with no origin (like mobile apps, curl, Postman)
+        if (!origin) {
           callback(null, true);
           return;
         }
+
+        try {
+          const hostname = new URL(origin).hostname;
+          if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            callback(null, true);
+            return;
+          }
+        } catch (error) {
+          // Invalid URL format
+          callback(new Error('Invalid origin'), false);
+          return;
+        }
+
         callback(new Error('Not allowed'), false);
       },
       credentials: true,

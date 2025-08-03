@@ -4,8 +4,17 @@ import { auth } from '../utils/auth';
 // Middleware to verify authentication
 export async function verifyAuth(request: FastifyRequest, reply: FastifyReply) {
   try {
+    const headersObj = new Headers();
+    Object.entries(request.headers).forEach(([key, value]) => {
+      if (typeof value === 'string') {
+        headersObj.set(key, value);
+      } else if (Array.isArray(value) && value[0]) {
+        headersObj.set(key, value[0]);
+      }
+    });
+
     const session = await auth.api.getSession({
-      headers: new Headers(request.headers as Record<string, string>),
+      headers: headersObj,
     });
 
     if (!session) {
@@ -19,6 +28,7 @@ export async function verifyAuth(request: FastifyRequest, reply: FastifyReply) {
     request.user = session.user;
     request.session = session;
   } catch (error) {
+    request.log.error('Auth verification error:', error);
     return reply.status(401).send({
       error: 'Unauthorized',
       message: 'Invalid authentication',
@@ -32,8 +42,17 @@ export async function optionalAuth(
   _reply: FastifyReply
 ) {
   try {
+    const headersObj = new Headers();
+    Object.entries(request.headers).forEach(([key, value]) => {
+      if (typeof value === 'string') {
+        headersObj.set(key, value);
+      } else if (Array.isArray(value) && value[0]) {
+        headersObj.set(key, value[0]);
+      }
+    });
+
     const session = await auth.api.getSession({
-      headers: new Headers(request.headers as Record<string, string>),
+      headers: headersObj,
     });
 
     if (session) {

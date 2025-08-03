@@ -42,8 +42,8 @@ export interface AuthResponse {
   user: {
     id: string;
     email: string;
-    firstName?: string;
-    lastName?: string;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
     createdAt: Date;
     updatedAt: Date;
   };

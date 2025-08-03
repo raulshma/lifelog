@@ -21,6 +21,7 @@ export const auth = betterAuth({
   },
   secret: process.env['BETTER_AUTH_SECRET'] || 'your-super-secret-auth-key',
   baseURL: process.env['BETTER_AUTH_URL'] || 'http://localhost:3001',
+  basePath: '/api/auth',
   trustedOrigins: [process.env['CORS_ORIGIN'] || 'http://localhost:5173'],
 });
 
